@@ -80,7 +80,7 @@ file(GLOB_RECURSE SOURCES
         "Libs/FreeRTOS/portable/GCC/ARM_CM4F/port.c"
 
         # Devices
-        "Libs/MG996r_HAL/*.c"
+        "Libs/MG996r_HAL/*.cpp"
         )
  
 # Add lincer file
