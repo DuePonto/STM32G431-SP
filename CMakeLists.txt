@@ -59,6 +59,9 @@ include_directories(
         # FreeRTOS
         ${CMAKE_SOURCE_DIR}/Libs/FreeRTOS/include
         ${CMAKE_SOURCE_DIR}/Libs/FreeRTOS/portable/GCC/ARM_CM4F
+
+        # Devices
+        ${CMAKE_SOURCE_DIR}/Libs/MG996r_HAL
         )
  
 # Add C defines
@@ -75,6 +78,9 @@ file(GLOB_RECURSE SOURCES
         # FreeRTOS
         "Libs/FreeRTOS/*.c"
         "Libs/FreeRTOS/portable/GCC/ARM_CM4F/port.c"
+
+        # Devices
+        "Libs/MG996r_HAL/*.c"
         )
  
 # Add lincer file
