@@ -30,7 +30,11 @@ void vTaskCode( void * pvParameters )
     configASSERT( ( ( uint32_t ) pvParameters ) == 1 );
     // htim3.Instance->CCR1 = 1000;
     htim3.Instance->CCR1 = 1500;
+    htim3.Instance->CCR2 = 1500;
     HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+    HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+    HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_3);
+    HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_4);
 
 
     for( ;; )
@@ -38,7 +42,12 @@ void vTaskCode( void * pvParameters )
         if(htim3.Instance->CCR1 > 3000){
             htim3.Instance->CCR1 = 00;
         }
+        if(htim3.Instance->CCR2 > 3000){
+            htim3.Instance->CCR2 = 00;
+        }
+
         htim3.Instance->CCR1 += 1;
+        htim3.Instance->CCR2 += 1;
     	HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
     	vTaskDelay(1);
         pause++;
