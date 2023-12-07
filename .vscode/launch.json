@@ -13,7 +13,7 @@
                 "samplesPerSecond": 4
             },
             //"runToMain": true,
-            "preLaunchTask": "cmake",
+            "preLaunchTask": "cmake build",
             //"device": "STM32G431RE",
             "svdFile": "${workspaceRoot}/Docs/STM32G431.svd",
             "configFiles": [
