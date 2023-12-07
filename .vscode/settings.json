@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "stm32g4xx_hal_def.h": "c",
-        "stddef.h": "c",
-        "stm32_hal_legacy.h": "c",
-        "stm32g4xx.h": "c"
-    },
-    "C_Cpp.errorSquiggles": "enabled"
-}
