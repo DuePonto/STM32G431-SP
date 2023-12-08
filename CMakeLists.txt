@@ -13,8 +13,8 @@ set(CMAKE_TRY_COMPILE_TARGET_TYPE STATIC_LIBRARY)
  
 # Add you project name
 project(STM32G431-SP C CXX ASM)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_C_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_C_STANDARD 17)
  
 # Add carnel name
 set(MCPU cortex-m4)
