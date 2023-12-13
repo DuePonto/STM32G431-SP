@@ -27,6 +27,13 @@ uint16_t pause = 100;
 
 
 
+/* Tasks prototypes */
+
+void vTaskServo( void * pvParameters );
+
+void vTaskTouch ( void * pvParameters );
+
+
 
 
 void app(void)
@@ -129,7 +136,11 @@ void vTaskServo( void * pvParameters )
 /* Touch task */
 void vTaskTouch ( void * pvParameters ){
 
+
+
     for( ;; ){
-        
+
+
+
     }
 }
