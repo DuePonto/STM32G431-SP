@@ -26,7 +26,48 @@ extern TIM_HandleTypeDef htim4;
 uint16_t pause = 100;
 
 
-void vTaskCode( void * pvParameters )
+
+
+
+void app(void)
+{
+
+    /* Tasks creation -----------*/
+
+    /* Servo task */
+    xTaskCreate(vTaskServo,
+		  	    "ServoFunc",
+			    180,
+			    (void *) 1,
+			    2,
+			    NULL);
+
+    /* Touch task */
+    xTaskCreate(vTaskTouch,
+                "TouchFunc",
+                60,
+                (void *) 1,
+                2,
+                NULL);
+
+
+    /* Start FreeRTOS kernel */
+    vTaskStartScheduler();
+
+    while (1)
+    {
+
+    }
+}
+
+
+
+
+
+/* Tasks --------------------------------------------------------- */
+
+/* Servo task */
+void vTaskServo( void * pvParameters )
 {
     configASSERT( ( ( uint32_t ) pvParameters ) == 1 );
     // htim3.Instance->CCR1 = 1000;
@@ -46,7 +87,7 @@ void vTaskCode( void * pvParameters )
     servo3.setAngRange(180, 0);
     servo3.setCCRRange(2400, 430);
 
-     mg996r_hal servo4(&htim3, &htim3.Instance->CCR4, TIM_CHANNEL_4);
+    mg996r_hal servo4(&htim3, &htim3.Instance->CCR4, TIM_CHANNEL_4);
     servo4.setAngRange(180, 0);
     servo4.setCCRRange(2400, 430);
 
@@ -65,8 +106,8 @@ void vTaskCode( void * pvParameters )
     servo5.start();
     servo6.start();
 
-    for( ;; )
-    {
+    for( ;; ){
+
         curr_ang += 10;
         if(curr_ang > 180){
             curr_ang = 0;
@@ -80,54 +121,15 @@ void vTaskCode( void * pvParameters )
 
         HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
     	vTaskDelay(100);
+    }
+}
+
+
+
+/* Touch task */
+void vTaskTouch ( void * pvParameters ){
+
+    for( ;; ){
         
-
     }
 }
-
-// void TaskMG996 ( void * pvParameters )
-// {
-//     // configASSERT( ( ( uint32_t ) pvParameters ) == 2 );
-
-//     float angle = 0; 
-//     HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-//     mg996r_hal servo_1(&htim3, TIM_CHANNEL_1);
-//     servo_1.setAngRange(280, 0);
-//     servo_1.setCCRRange(1000, 500);
-
-//     for( ;; )
-//     {
-//         angle += 10;
-//         if(angle > 280){
-//             angle = 0;
-//         }
-//         servo_1.turnTo(angle);
-//     	vTaskDelay(100);
-//     }
-// }
-
-void app(void)
-{
-
-    /* Tasks creation -----------*/
-    xTaskCreate(vTaskCode,
-		  	    "TestFunc",
-			    180,
-			    (void *) 1,
-			    2,
-			    NULL);
-
-    vTaskStartScheduler();
-
-    while (1)
-    {
-
-    }
-}
-
-
-
-
-
-
-
