@@ -8,6 +8,7 @@
 
 /* Peripherals*/
 #include "mg996r_hal.hpp"
+#include "mpu9250_hal.h"
 
 
 
@@ -44,6 +45,8 @@ void vTaskServo( void * pvParameters );
 
 void vTaskTouch ( void * pvParameters );
 
+void vTaskAccel ( void * pvParameters );
+
 
 
 
@@ -61,14 +64,20 @@ void app(void)
 			    NULL);
 
     /* Touch task */
-    // xTaskCreate(vTaskTouch,
-    //             "TouchFunc",
-    //             60,
-    //             (void *) 1,
-    //             2,
-    //             NULL);
+    xTaskCreate(vTaskTouch,
+                "TouchFunc",
+                60,
+                (void *) 1,
+                2,
+                NULL);
 
-
+    /* Accelerometer task */
+    xTaskCreate(vTaskAccel,
+                "AccelFunc",
+                60,
+                (void *) 1,
+                2,
+                NULL);
 
 
 
@@ -78,7 +87,7 @@ void app(void)
 
     while (1)
     {
-
+        // Never should go here
     }
 }
 
@@ -151,6 +160,8 @@ void vTaskServo( void * pvParameters )
 /* Touch task */
 void vTaskTouch ( void * pvParameters ){
 
+    configASSERT( ( ( uint32_t ) pvParameters ) == 1 );
+
     HAL_GPIO_ReadPin(ADC_X_GPIO_Port, ADC_X_Pin);
 
     // HAL_ADCEx_Calibration_Start(&hadc1, );
@@ -160,6 +171,22 @@ void vTaskTouch ( void * pvParameters ){
         adc_x_state = HAL_GPIO_ReadPin(ADC_X_GPIO_Port, ADC_X_Pin);
         adc_y_state = HAL_GPIO_ReadPin(ADC_Y_GPIO_Port, ADC_Y_Pin);
         vTaskDelay(100);
+
+    }
+}
+
+
+
+/* Accelerometer task */
+void vTaskAccel ( void * pvParameters ){
+
+    configASSERT( ( ( uint32_t ) pvParameters ) == 1 );
+
+    mpu9250_HandleTypeDef mpu;
+    // mpu.
+    for( ;; ){
+
+
 
     }
 }
