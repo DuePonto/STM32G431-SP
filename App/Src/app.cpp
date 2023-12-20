@@ -1,4 +1,4 @@
-/* Includes ------------------------------------------------------------------*/
+/* Includes ------------------------------------------------------------------ */
 #include "app.hpp"
 
 /* FreeRTOS */
@@ -6,8 +6,9 @@
 #include "task.h"
 #include "queue.h"
 
-/* Peripheral*/
+/* Peripherals*/
 #include "mg996r_hal.hpp"
+
 
 
 /* Function that we call in main.c 
@@ -19,14 +20,24 @@ extern "C" void app_c(void)
 }
 
 
-/* Variables ------------------------------------------------------------------*/
+/* Variables ----------------------------------------------------------------- */
+/* Externed structures from CubeMX */
+extern ADC_HandleTypeDef hadc1;
+
 extern TIM_HandleTypeDef htim3;
-extern TIM_HandleTypeDef htim4;
+extern TIM_HandleTypeDef htim15;
 
+
+
+/* Global */
 uint16_t pause = 100;
+GPIO_PinState adc_x_state;
+GPIO_PinState adc_y_state;
 
 
 
+
+/* Function prototypes ------------------------------------------------------- */
 /* Tasks prototypes */
 
 void vTaskServo( void * pvParameters );
@@ -39,7 +50,7 @@ void vTaskTouch ( void * pvParameters );
 void app(void)
 {
 
-    /* Tasks creation -----------*/
+    /* Tasks creation ---------------------------- */
 
     /* Servo task */
     xTaskCreate(vTaskServo,
@@ -50,15 +61,19 @@ void app(void)
 			    NULL);
 
     /* Touch task */
-    xTaskCreate(vTaskTouch,
-                "TouchFunc",
-                60,
-                (void *) 1,
-                2,
-                NULL);
+    // xTaskCreate(vTaskTouch,
+    //             "TouchFunc",
+    //             60,
+    //             (void *) 1,
+    //             2,
+    //             NULL);
 
 
-    /* Start FreeRTOS kernel */
+
+
+
+
+    /* Start FreeRTOS kernel --------------------- */
     vTaskStartScheduler();
 
     while (1)
@@ -98,11 +113,11 @@ void vTaskServo( void * pvParameters )
     servo4.setAngRange(180, 0);
     servo4.setCCRRange(2400, 430);
 
-    mg996r_hal servo5(&htim4, &htim4.Instance->CCR1, TIM_CHANNEL_1);
+    mg996r_hal servo5(&htim15, &htim15.Instance->CCR1, TIM_CHANNEL_1);
     servo5.setAngRange(180, 0);
     servo5.setCCRRange(2435, 465);
 
-    mg996r_hal servo6(&htim4, &htim4.Instance->CCR2, TIM_CHANNEL_2);
+    mg996r_hal servo6(&htim15, &htim15.Instance->CCR2, TIM_CHANNEL_2);
     servo6.setAngRange(180, 0);
     servo6.setCCRRange(2480, 490);
 
@@ -136,11 +151,15 @@ void vTaskServo( void * pvParameters )
 /* Touch task */
 void vTaskTouch ( void * pvParameters ){
 
+    HAL_GPIO_ReadPin(ADC_X_GPIO_Port, ADC_X_Pin);
 
+    // HAL_ADCEx_Calibration_Start(&hadc1, );
 
     for( ;; ){
 
-
+        adc_x_state = HAL_GPIO_ReadPin(ADC_X_GPIO_Port, ADC_X_Pin);
+        adc_y_state = HAL_GPIO_ReadPin(ADC_Y_GPIO_Port, ADC_Y_Pin);
+        vTaskDelay(100);
 
     }
 }
