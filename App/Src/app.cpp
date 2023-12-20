@@ -8,7 +8,7 @@
 
 /* Peripherals*/
 #include "mg996r_hal.hpp"
-#include "mpu9250_hal.h"
+#include "mpu9255_hal.h"
 
 
 
@@ -25,6 +25,8 @@ extern "C" void app_c(void)
 /* Externed structures from CubeMX */
 extern ADC_HandleTypeDef hadc1;
 
+extern I2C_HandleTypeDef hi2c2;
+
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim15;
 
@@ -34,6 +36,7 @@ extern TIM_HandleTypeDef htim15;
 uint16_t pause = 100;
 GPIO_PinState adc_x_state;
 GPIO_PinState adc_y_state;
+uint8_t who_am_i_mpu = 0;
 
 
 
@@ -43,9 +46,9 @@ GPIO_PinState adc_y_state;
 
 void vTaskServo( void * pvParameters );
 
-void vTaskTouch ( void * pvParameters );
+void vTaskTouch( void * pvParameters );
 
-void vTaskAccel ( void * pvParameters );
+void vTaskAccel( void * pvParameters );
 
 
 
@@ -100,7 +103,7 @@ void app(void)
 /* Servo task */
 void vTaskServo( void * pvParameters )
 {
-    configASSERT( ( ( uint32_t ) pvParameters ) == 1 );
+    // configASSERT( ( ( uint32_t ) pvParameters ) == 1 );
     // htim3.Instance->CCR1 = 1000;
     uint16_t ccr_min = 1000;
 
@@ -160,7 +163,7 @@ void vTaskServo( void * pvParameters )
 /* Touch task */
 void vTaskTouch ( void * pvParameters ){
 
-    configASSERT( ( ( uint32_t ) pvParameters ) == 1 );
+    // configASSERT( ( ( uint32_t ) pvParameters ) == 1 );
 
     HAL_GPIO_ReadPin(ADC_X_GPIO_Port, ADC_X_Pin);
 
@@ -180,13 +183,18 @@ void vTaskTouch ( void * pvParameters ){
 /* Accelerometer task */
 void vTaskAccel ( void * pvParameters ){
 
-    configASSERT( ( ( uint32_t ) pvParameters ) == 1 );
 
-    mpu9250_HandleTypeDef mpu;
-    // mpu.
+    mpu9255_HandleTypeDef mpu;
+    mpu.i2c_ptr = &hi2c2;
+
+    
+    MPU9255_readRegs(&mpu, WHO_AM_I, &who_am_i_mpu, (uint16_t) 1);
     for( ;; ){
-
-
-
+        // HAL_I2C_Mem_Read(&hi2c2, MPU_I2C_ADDR_AD0_LOW << 1, WHO_AM_I, I2C_MEMADD_SIZE_8BIT, &who_am_i_mpu, 1, 100);
+        MPU9255_readRegs(&mpu, WHO_AM_I, &who_am_i_mpu, (uint16_t) 1);
+        vTaskDelay(500);
+        who_am_i_mpu = 5;
+        vTaskDelay(500);
+        
     }
 }

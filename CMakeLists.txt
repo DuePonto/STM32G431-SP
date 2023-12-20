@@ -62,7 +62,7 @@ include_directories(
 
         # Devices
         ${CMAKE_SOURCE_DIR}/Libs/MG996r_HAL
-        ${CMAKE_SOURCE_DIR}/Libs/MPU9250_HAL
+        ${CMAKE_SOURCE_DIR}/Libs/MPU9255_HAL
         )
  
 # Add C defines
@@ -73,7 +73,6 @@ file(GLOB_RECURSE SOURCES
         "Core/Src/*.c"
         "App/Src/*.cpp"
         "Drivers/STM32G4xx_HAL_Driver/Src/*.c"
-        #"startup_stm32f334x8.s"
         "startup_stm32g431xx.s"
 
         # FreeRTOS
@@ -82,7 +81,7 @@ file(GLOB_RECURSE SOURCES
 
         # Devices
         "Libs/MG996r_HAL/*.cpp"
-        "Libs/MPU9250_HAL/*.c"
+        "Libs/MPU9255_HAL/*.c"
         )
  
 # Add lincer file

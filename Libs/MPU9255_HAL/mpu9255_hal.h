@@ -1,6 +1,9 @@
-#ifndef __MPU9250_HAL
-#define __MPU9250_HAL
+#ifndef __MPU9255_HAL
+#define __MPU9255_HAL
 
+#ifdef __cplusplus
+    extern "C" {
+#endif
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -91,18 +94,18 @@ typedef enum{
     YA_OFFSET_L = 0x7B,
     ZA_OFFSET_H = 0x7D,
     ZA_OFFSET_L = 0x7E
-}mpu9250_registers;
+}mpu9255_registers;
 
 typedef enum{
     MPU_OK,
     MPU_ERROR,
     MPU_BUSY,
     MPU_TIMEOUT
-}mpu9250_status;
+}mpu9255_status;
 
 typedef struct{
     I2C_HandleTypeDef   *i2c_ptr;
-}mpu9250_HandleTypeDef;
+}mpu9255_HandleTypeDef;
 
 
 
@@ -111,7 +114,12 @@ typedef struct{
 
 
 /* Private */
-mpu9250_status mpu9250_readRegs(mpu9250_HandleTypeDef *dev, mpu9250_registers reg_addr, uint8_t *buff, uint8_t len);
-mpu9250_status mpu9250_writeRegs(mpu9250_HandleTypeDef *dev, mpu9250_registers reg_addr, uint8_t *buff, uint8_t len);
+mpu9255_status MPU9255_readRegs(mpu9255_HandleTypeDef *dev, mpu9255_registers reg_addr, uint8_t *buff, uint16_t len);
+mpu9255_status MPU9255_writeRegs(mpu9255_HandleTypeDef *dev, mpu9255_registers reg_addr, uint8_t *buff, uint16_t len);
 
-#endif /* __MG996R_HAL */
+
+#ifdef __cplusplus
+    }
+#endif
+
+#endif /* __MPU9255_HAL */

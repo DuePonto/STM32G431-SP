@@ -10,7 +10,7 @@
             "servertype": "openocd",
             "liveWatch": {
                 "enabled": true,
-                "samplesPerSecond": 4
+                "samplesPerSecond": 10
             },
             //"runToMain": true,
             "preLaunchTask": "cmake build",
