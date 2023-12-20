@@ -62,6 +62,7 @@ include_directories(
 
         # Devices
         ${CMAKE_SOURCE_DIR}/Libs/MG996r_HAL
+        ${CMAKE_SOURCE_DIR}/Libs/MPU9250_HAL
         )
  
 # Add C defines
@@ -81,6 +82,7 @@ file(GLOB_RECURSE SOURCES
 
         # Devices
         "Libs/MG996r_HAL/*.cpp"
+        "Libs/MPU9250_HAL/*.c"
         )
  
 # Add lincer file
