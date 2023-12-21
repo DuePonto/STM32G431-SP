@@ -12,6 +12,9 @@
 /* Defines -------------------------------------------------------------------*/
 #define MPU_I2C_ADDR_AD0_HIGH 0b01101001
 #define MPU_I2C_ADDR_AD0_LOW 0b01101000
+#define MPU_I2C_ADDR_CURRENT  MPU_I2C_ADDR_AD0_LOW
+
+#define MPU9255_ADDR 0x73U
 
 
 /* Typedefs ------------------------------------------------------------------*/
@@ -97,25 +100,26 @@ typedef enum{
 }mpu9255_registers;
 
 typedef enum{
-    MPU_OK,
-    MPU_ERROR,
-    MPU_BUSY,
-    MPU_TIMEOUT
-}mpu9255_status;
+    MPU_OK          = 0x00U,
+    MPU_ERROR       = 0x01U,
+    MPU_BUSY        = 0x02U,
+    MPU_TIMEOUT     = 0x03U,
+    // ANOTHER_DEVICE  = 0xFFU
+}MPU_StatusTypeDef;
 
 typedef struct{
     I2C_HandleTypeDef   *i2c_ptr;
-}mpu9255_HandleTypeDef;
+}MPU_HandleTypeDef;
 
 
 
 /* Functions -----------------------------------------------------------------*/
 /* Public */
-
+MPU_StatusTypeDef MPU9255_check(MPU_HandleTypeDef *dev);
 
 /* Private */
-mpu9255_status MPU9255_readRegs(mpu9255_HandleTypeDef *dev, mpu9255_registers reg_addr, uint8_t *buff, uint16_t len);
-mpu9255_status MPU9255_writeRegs(mpu9255_HandleTypeDef *dev, mpu9255_registers reg_addr, uint8_t *buff, uint16_t len);
+MPU_StatusTypeDef MPU9255_readRegs(MPU_HandleTypeDef *dev, mpu9255_registers reg_addr, uint8_t *buff, uint16_t len);
+MPU_StatusTypeDef MPU9255_writeRegs(MPU_HandleTypeDef *dev, mpu9255_registers reg_addr, uint8_t *buff, uint16_t len);
 
 
 #ifdef __cplusplus
