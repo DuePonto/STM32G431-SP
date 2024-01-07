@@ -183,15 +183,16 @@ void vTaskTouch ( void * pvParameters ){
 /* Accelerometer task */
 void vTaskAccel ( void * pvParameters ){
 
-
-    mpu9255_HandleTypeDef mpu;
+    volatile MPU_StatusTypeDef mpu_status = MPU_ERROR;
+    MPU_HandleTypeDef mpu;
     mpu.i2c_ptr = &hi2c2;
+    // uint8_t who_am_i_mpu = 0;
 
-    
-    MPU9255_readRegs(&mpu, WHO_AM_I, &who_am_i_mpu, (uint16_t) 1);
+    HAL_I2C_Mem_Read(&hi2c2, MPU_I2C_ADDR_AD0_LOW << 1, WHO_AM_I, I2C_MEMADD_SIZE_8BIT, &who_am_i_mpu, 1, 100);
+    mpu_status = MPU9255_check(&mpu);
     for( ;; ){
-        // HAL_I2C_Mem_Read(&hi2c2, MPU_I2C_ADDR_AD0_LOW << 1, WHO_AM_I, I2C_MEMADD_SIZE_8BIT, &who_am_i_mpu, 1, 100);
-        MPU9255_readRegs(&mpu, WHO_AM_I, &who_am_i_mpu, (uint16_t) 1);
+       
+        mpu_status = MPU9255_check(&mpu);
         vTaskDelay(500);
         who_am_i_mpu = 5;
         vTaskDelay(500);
