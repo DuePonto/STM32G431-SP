@@ -30,6 +30,8 @@ extern I2C_HandleTypeDef hi2c2;
 extern TIM_HandleTypeDef htim3;
 extern TIM_HandleTypeDef htim15;
 
+extern UART_HandleTypeDef huart2;
+
 
 
 /* Global */
@@ -49,6 +51,8 @@ void vTaskServo( void * pvParameters );
 void vTaskTouch( void * pvParameters );
 
 void vTaskAccel( void * pvParameters );
+
+void vTaskUART( void * pvParameters );
 
 
 
@@ -82,6 +86,13 @@ void app(void)
                 2,
                 NULL);
 
+    /* UART task */
+    xTaskCreate(vTaskUART,
+                "UARTFunc",
+                60,
+                (void *) 1,
+                2,
+                NULL);
 
 
 
@@ -190,6 +201,7 @@ void vTaskAccel ( void * pvParameters ){
 
     HAL_I2C_Mem_Read(&hi2c2, MPU_I2C_ADDR_AD0_LOW << 1, WHO_AM_I, I2C_MEMADD_SIZE_8BIT, &who_am_i_mpu, 1, 100);
     mpu_status = MPU9255_check(&mpu);
+
     for( ;; ){
        
         mpu_status = MPU9255_check(&mpu);
@@ -197,5 +209,34 @@ void vTaskAccel ( void * pvParameters ){
         who_am_i_mpu = 5;
         vTaskDelay(500);
         
+    }
+}
+
+
+
+/* UART task */
+void vTaskUART ( void * pvParameters ){
+
+    /* Enable IDLE interrupt for uart2 */
+
+    __HAL_UART_ENABLE_IT(&huart2, UART_IT_IDLE);
+
+    for( ;; ){
+
+
+
+    }
+}
+
+
+
+
+/* Callbacks */
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+    if(huart->Instance == huart2.Instance){
+        if(__HAL_UART_GET_IT(huart, UART_IT_IDLE)){
+            
+        }
     }
 }
